@@ -51,8 +51,6 @@ public class JoinDatasets {
               departureDate = arrivalDate.plusDays(numNightsStayed); 
 
     while (arrivalDate.isBefore(departureDate)) {
-      revenueInCurrentMonth += avgPricePerRoom;
-
       // if adding a day to the arrival date causes the month to change, reset the revenueInCurrentMonth variable
       // and add the revenue line to the combined csv file
       if (arrivalDate.getMonth() != arrivalDate.plusDays(1).getMonth()) {
@@ -66,6 +64,7 @@ public class JoinDatasets {
         revenueInCurrentMonth = 0;
       }
 
+      revenueInCurrentMonth += avgPricePerRoom;
       arrivalDate = arrivalDate.plusDays(1);
     }
 
@@ -104,8 +103,6 @@ public class JoinDatasets {
               departureDate = arrivalDate.plusDays(numNightsStayed);
 
     while (arrivalDate.isBefore(departureDate)) {
-      revenueInCurrentMonth += avgPricePerRoom;
-
       // if adding a day to the arrival date causes the month to change, reset the revenueInCurrentMonth variable
       // and add the revenue line to the combined csv file
       if (arrivalDate.getMonth() != arrivalDate.plusDays(1).getMonth()) {
@@ -119,6 +116,7 @@ public class JoinDatasets {
         revenueInCurrentMonth = 0;
       }
 
+      revenueInCurrentMonth += avgPricePerRoom;
       arrivalDate = arrivalDate.plusDays(1);
     }
 
