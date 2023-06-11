@@ -1,3 +1,4 @@
+rm -rf inputs
 mkdir -p inputs
 javac JoinDatasets.java -d classes
 java -cp classes JoinDatasets customer-reservations.csv
