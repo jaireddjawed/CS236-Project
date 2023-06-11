@@ -4,8 +4,8 @@ alias hdfs='/usr/local/cellar/hadoop/$HADOOP_VERSION/libexec/bin/hdfs'
 alias yarn='/usr/local/cellar/hadoop/$HADOOP_VERSION/libexec/bin/yarn'
 
 mkdir -p classes
-javac WordCount.java -cp $(hadoop classpath) -d classes
-jar -cvf WordCount.jar -C classes/ .
+javac MapReduce.java -cp $(hadoop classpath) -d classes
+jar -cvf MapReduce.jar -C classes/ .
 
 # remove input directory from hdfs and replace it
 hdfs dfs -rm -r /inputdata
@@ -15,7 +15,7 @@ hadoop fs -put ./inputs /inputdata
 hdfs dfs -rm -r /outputdata
 
 # run the WordCount job
-hadoop jar WordCount.jar org.myorg.WordCount /inputdata/*.csv /outputdata
+hadoop jar MapReduce.jar MapReduce /inputdata/*.csv /outputdata
 
 # print the output of the WordCount job
-hdfs dfs -cat /outputdata/part-00000
+hdfs dfs -cat /outputdata/part-r-00000
