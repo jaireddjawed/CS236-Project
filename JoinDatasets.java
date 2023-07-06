@@ -30,7 +30,7 @@ public class JoinDatasets {
     add("December");
   }};
 
-  public static void calculateRevenueForHotelDatasetLine(String[] bookingInfo) throws IOException {
+  public static void calculateRevenueForHotelDatasetLine(String[] bookingInfo, String combinedFolder) throws IOException {
     String bookingStatus = bookingInfo[1];
     boolean isCanceled = bookingStatus.equals("1");
 
@@ -54,7 +54,7 @@ public class JoinDatasets {
       // if adding a day to the arrival date causes the month to change, reset the revenueInCurrentMonth variable
       // and add the revenue line to the combined csv file
       if (arrivalDate.getMonth() != arrivalDate.plusDays(1).getMonth()) {
-        FileWriter fr = new FileWriter("./inputs/combined.csv", true);
+        FileWriter fr = new FileWriter("./"+combinedFolder+"/combined.csv", true);
         fr.write(
           arrivalDate.getYear() + "," +
           arrivalDate.getMonth() + "," +
@@ -69,7 +69,7 @@ public class JoinDatasets {
     }
 
     // add the last revenue line to the combined csv file
-    FileWriter fr = new FileWriter("./inputs/combined.csv", true);
+    FileWriter fr = new FileWriter("./"+combinedFolder+"/combined.csv", true);
     fr.write(
       arrivalDate.getYear() + "," +
       arrivalDate.getMonth() + "," +
@@ -80,7 +80,7 @@ public class JoinDatasets {
 
   // columns are formatted as the following
   // [Booking_ID,stays_in_weekend_nights,stays_in_week_nights,lead_time,arrival_year,arrival_month,arrival_date,market_segment_type,avg_price_per_room,booking_status]
-  public static void calculateRevenueForCustomerReservationLine(String[] bookingInfo) throws IOException {
+  public static void calculateRevenueForCustomerReservationLine(String[] bookingInfo, String combinedFolder) throws IOException {
     String bookingStatus = bookingInfo[9];
     boolean isCanceled = bookingStatus.equals("Canceled");
 
@@ -106,7 +106,7 @@ public class JoinDatasets {
       // if adding a day to the arrival date causes the month to change, reset the revenueInCurrentMonth variable
       // and add the revenue line to the combined csv file
       if (arrivalDate.getMonth() != arrivalDate.plusDays(1).getMonth()) {
-        FileWriter fr = new FileWriter("./inputs/combined.csv", true);
+        FileWriter fr = new FileWriter("./"+combinedFolder+"/combined.csv", true);
         fr.write(
           arrivalDate.getYear() + "," +
           arrivalDate.getMonth() + "," +
@@ -121,7 +121,7 @@ public class JoinDatasets {
     }
 
     // add the last revenue line to the combined csv file
-    FileWriter fr = new FileWriter("./inputs/combined.csv", true);
+    FileWriter fr = new FileWriter("./"+combinedFolder+"/combined.csv", true);
     fr.write(
       arrivalDate.getYear() + "," +
       arrivalDate.getMonth() + "," +
@@ -132,12 +132,13 @@ public class JoinDatasets {
 
   public static void main(String[] args) {
     String reservationFile = args[0];
+    String combinedFolder = args[1];
 
     try {
       // add the header line to the combined csv file if the file doesn't exist
-      boolean isFileEmpty = new File("./inputs/combined.csv").length() == 0;
+      boolean isFileEmpty = new File("./"+combinedFolder+"/combined.csv").length() == 0;
       if (isFileEmpty) {
-        FileWriter fr = new FileWriter("./inputs/combined.csv", true);
+        FileWriter fr = new FileWriter("./"+combinedFolder+"/combined.csv", true);
         fr.write("Year,Month,Revenue\n");
         fr.close();
       }
@@ -155,10 +156,10 @@ public class JoinDatasets {
       while ((line = br.readLine()) != null) {
         String[] bookingInfo = line.split(",");
 
-        if (reservationFile.equals("hotel-booking.csv")) {
-          calculateRevenueForHotelDatasetLine(bookingInfo);
-        } else if (reservationFile.equals("customer-reservations.csv")) {
-          calculateRevenueForCustomerReservationLine(bookingInfo);
+        if (reservationFile.contains("hotel-booking.csv")) {
+          calculateRevenueForHotelDatasetLine(bookingInfo, combinedFolder);
+        } else if (reservationFile.contains("customer-reservations.csv")) {
+          calculateRevenueForCustomerReservationLine(bookingInfo, combinedFolder);
         }
       }
     } catch (IOException e) {
